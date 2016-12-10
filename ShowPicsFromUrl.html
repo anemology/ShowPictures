@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Show Pictures From Urls</title>
+<style type="text/css">
+	#textarea {
+		width: 50%;
+		height: 150px;
+	}
+	#create{
+		width: 150px;
+		height: 40px;
+		font-size: 20px;
+	}
+	img{
+		margin: 5px
+	}
+</style>
+<script>
+	function NewPage(){
+		var urls = document.getElementById("textarea").value;
+		var list = urls.split("\n");
+		//list.splice(list.length-1, 1);//去掉最後一個元素
+		var imgStrings = "";
+		
+		for (var i=0; i<=list.length-1; i++){
+			//imgStrings += "<img src=\""+ list[i] +"\" alt=\""+ list[i] +"\" />";
+			var imgs = document.createElement("img");
+			imgs.src = list[i];
+			imgs.alt = list[i];
+			document.body.appendChild(imgs);
+		}
+		//var htmlStrings = "<html><head><title>All Your Images</title></head><body>"+ imgStrings +"</body></html>";
+
+		//var NewTab = window.open();
+		//NewTab.document.write(htmlStrings);
+
+	}
+</script>
+</head>
+<body>
+Put your images url in here:<br>
+<TEXTAREA id="textarea"></TEXTAREA><br>
+<input type="button" id="create" value="Click me!" onclick="NewPage();"><br>
+<hr>
+</body>
+</html>
