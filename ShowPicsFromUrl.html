@@ -4,14 +4,24 @@
 	<meta charset="UTF-8">
 	<title>Show Pictures From Urls</title>
 <style type="text/css">
-	#textarea {
-		width: 50%;
+	textarea {
+		width: 45%;
 		height: 150px;
+	}
+	.areaTitle{
+		width: 45%;
+		display: inline-block;
+	}
+	.AllUrl{
+		visibility: hidden;
 	}
 	#create{
 		width: 150px;
 		height: 40px;
 		font-size: 20px;
+	}
+	#min, #max, #step{
+		width: 50px;
 	}
 	img{
 		margin: 5px
@@ -21,27 +31,70 @@
 	function NewPage(){
 		var urls = document.getElementById("textarea").value;
 		var list = urls.split("\n");
-		//list.splice(list.length-1, 1);//去掉最後一個元素
 		var imgStrings = "";
+		var oneUrl;
 		
-		for (var i=0; i<=list.length-1; i++){
-			//imgStrings += "<img src=\""+ list[i] +"\" alt=\""+ list[i] +"\" />";
-			var imgs = document.createElement("img");
-			imgs.src = list[i];
-			imgs.alt = list[i];
-			document.body.appendChild(imgs);
+		if (document.getElementById("useRegex").checked){
+			var min = parseInt(document.getElementById("min").value);
+			var maxloop = parseInt(document.getElementById("max").value);
+			var step = parseInt(document.getElementById("step").value);
+
+			for (var j=min; j<=maxloop; j+=step){
+				var imgs = document.createElement("img");
+				oneUrl = list[0].replace("*", j);
+				imgs.src = oneUrl;
+				imgs.alt = oneUrl;
+				document.body.appendChild(imgs);
+				document.getElementById("showURLs").value += imgs.src + "\n";
+			}
+		}else{
+			for (var i=0; i<=list.length-1; i++){
+				//imgStrings += "<img src=\""+ list[i] +"\" alt=\""+ list[i] +"\" />";
+				var imgs = document.createElement("img");
+				imgs.src = list[i];
+				imgs.alt = list[i];
+				document.body.appendChild(imgs);
+			}
 		}
 		//var htmlStrings = "<html><head><title>All Your Images</title></head><body>"+ imgStrings +"</body></html>";
 
 		//var NewTab = window.open();
 		//NewTab.document.write(htmlStrings);
-
+	}
+	
+	function check(){
+		if (document.getElementById("useRegex").checked){
+			document.getElementById("min").disabled = false;
+			document.getElementById("max").disabled = false;
+			document.getElementById("step").disabled = false;
+			document.getElementById("AllUrls").style.visibility = "visible";
+			document.getElementById("showURLs").style.visibility = "visible";
+		}else{
+			document.getElementById("min").disabled = true;
+			document.getElementById("max").disabled = true;
+			document.getElementById("step").disabled = true;
+			document.getElementById("AllUrls").style.visibility = "hidden";
+			document.getElementById("showURLs").style.visibility = "hidden";
+		}
 	}
 </script>
 </head>
 <body>
-Put your images url in here:<br>
-<TEXTAREA id="textarea"></TEXTAREA><br>
+	<span class="areaTitle">Put your images url in here:</span>
+	<span class="areaTitle AllUrl" id="AllUrls">All image urls:</span><br>
+<div>
+	<TEXTAREA id="textarea"></TEXTAREA>
+	<TEXTAREA id="showURLs" class="AllUrl" readonly ></TEXTAREA>
+</div>
+<div>
+	<input type="checkbox" name="useRegex" id="useRegex" onclick="check();">
+	<label for="useRegex">使用萬用字元(*)取代數字-</label>
+	<label>範圍:</label>
+		<input type="text" name="min" id="min" disabled="true" placeholder="min">~
+		<input type="text" name="max" id="max" disabled="true" placeholder="max">
+	<label for="step">間距:</label>
+		<input type="text" name="step" id="step" disabled="true" placeholder="step">
+</div>
 <input type="button" id="create" value="Click me!" onclick="NewPage();"><br>
 <hr>
 </body>
