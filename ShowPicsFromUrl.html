@@ -1,99 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Show Pictures From Urls</title>
+    <meta charset="UTF-8">
+    <title>Show Pictures From Urls</title>
 <style type="text/css">
-	textarea {
-		width: 45%;
-		height: 150px;
-	}
-	.areaTitle{
-		width: 45%;
-		display: inline-block;
-	}
-	.AllUrl{
-		visibility: hidden;
-	}
-	#create{
-		width: 150px;
-		height: 40px;
-		font-size: 20px;
-	}
-	#min, #max, #step{
-		width: 50px;
-	}
-	img{
-		margin: 5px;
-		width: 24%;
-	}
+    textarea {
+        width: 45%;
+        height: 150px;
+    }
+    .areaTitle{
+        width: 45%;
+        display: inline-block;
+    }
+    .AllUrl{
+        visibility: hidden;
+    }
+    #create{
+        width: 150px;
+        height: 40px;
+        font-size: 20px;
+    }
+    #min, #max, #step{
+        width: 50px;
+    }
+    img{
+        margin: 5px;
+        width: 24%;
+    }
 </style>
 <script>
-	function NewPage(){
-		var list = document.getElementById("textarea").value.split("\n");
-		
-		// remove all images
-		var imgarea = document.getElementById("imgarea");
-		while (imgarea.firstChild) {
-			imgarea.removeChild(imgarea.firstChild);
-		}
-		document.getElementById("showURLs").value = "";
-		
-		if (document.getElementById("useRegex").checked){
-			var min = parseInt(document.getElementById("min").value);
-			var maxloop = parseInt(document.getElementById("max").value);
-			var step = parseInt(document.getElementById("step").value);
+    function NewPage(){
+        var list = document.getElementById("textarea").value.split("\n");
+        
+        // remove all images
+        var imgarea = document.getElementById("imgarea");
+        while (imgarea.firstChild) {
+            imgarea.removeChild(imgarea.firstChild);
+        }
+        document.getElementById("showURLs").value = "";
+        
+        if (document.getElementById("useRegex").checked){
+            var min = parseInt(document.getElementById("min").value);
+            var maxloop = parseInt(document.getElementById("max").value);
+            var step = parseInt(document.getElementById("step").value);
 
-			for (var j=min; j<=maxloop; j+=step){
-				var imgs = document.createElement("img");
-				var oneUrl = list[0].replace("*", j);
-				imgs.src = oneUrl;
-				imgs.alt = oneUrl;
-				imgarea.appendChild(imgs);
-				document.getElementById("showURLs").value += imgs.src + "\n";
-			}
-		}else{
-			for (var i=0; i<=list.length-1; i++){
-				var imgs = document.createElement("img");
-				imgs.src = list[i];
-				imgs.alt = list[i];
-				imgarea.appendChild(imgs);
-			}
-		}
-	}
-	
-	function check(){
-		if (document.getElementById("useRegex").checked){
-			document.getElementById("min").disabled = false;
-			document.getElementById("max").disabled = false;
-			document.getElementById("step").disabled = false;
-			document.getElementById("AllUrls").style.visibility = "visible";
-			document.getElementById("showURLs").style.visibility = "visible";
-		}else{
-			document.getElementById("min").disabled = true;
-			document.getElementById("max").disabled = true;
-			document.getElementById("step").disabled = true;
-			document.getElementById("AllUrls").style.visibility = "hidden";
-			document.getElementById("showURLs").style.visibility = "hidden";
-		}
-	}
+            for (var j=min; j<=maxloop; j+=step){
+                var imgs = document.createElement("img");
+                var oneUrl = list[0].replace("*", j);
+                imgs.src = oneUrl;
+                imgs.alt = oneUrl;
+                imgarea.appendChild(imgs);
+                document.getElementById("showURLs").value += imgs.src + "\n";
+            }
+        }else{
+            for (var i=0; i<=list.length-1; i++){
+                var imgs = document.createElement("img");
+                imgs.src = list[i];
+                imgs.alt = list[i];
+                imgarea.appendChild(imgs);
+            }
+        }
+    }
+    
+    function check(){
+        if (document.getElementById("useRegex").checked){
+            document.getElementById("min").disabled = false;
+            document.getElementById("max").disabled = false;
+            document.getElementById("step").disabled = false;
+            document.getElementById("AllUrls").style.visibility = "visible";
+            document.getElementById("showURLs").style.visibility = "visible";
+        }else{
+            document.getElementById("min").disabled = true;
+            document.getElementById("max").disabled = true;
+            document.getElementById("step").disabled = true;
+            document.getElementById("AllUrls").style.visibility = "hidden";
+            document.getElementById("showURLs").style.visibility = "hidden";
+        }
+    }
 </script>
 </head>
 <body>
-	<span class="areaTitle">Put your images url in here:</span>
-	<span class="areaTitle AllUrl" id="AllUrls">All image urls:</span><br>
+    <span class="areaTitle">Put your images url in here:</span>
+    <span class="areaTitle AllUrl" id="AllUrls">All image urls:</span><br>
 <div>
-	<TEXTAREA id="textarea"></TEXTAREA>
-	<TEXTAREA id="showURLs" class="AllUrl" readonly ></TEXTAREA>
+    <TEXTAREA id="textarea"></TEXTAREA>
+    <TEXTAREA id="showURLs" class="AllUrl" readonly ></TEXTAREA>
 </div>
 <div>
-	<input type="checkbox" name="useRegex" id="useRegex" onclick="check();">
-	<label for="useRegex">use wildcard(*) replace numbers-</label>
-	<label>range:</label>
-		<input type="text" name="min" id="min" disabled placeholder="min">~
-		<input type="text" name="max" id="max" disabled placeholder="max">
-	<label for="step">step:</label>
-		<input type="text" name="step" id="step" disabled placeholder="step">
+    <input type="checkbox" name="useRegex" id="useRegex" onclick="check();">
+    <label for="useRegex">use wildcard(*) replace numbers-</label>
+    <label>range:</label>
+        <input type="text" name="min" id="min" disabled placeholder="min">~
+        <input type="text" name="max" id="max" disabled placeholder="max">
+    <label for="step">step:</label>
+        <input type="text" name="step" id="step" disabled placeholder="step">
 </div>
 <input type="button" id="create" value="Show!" onclick="NewPage();"><br>
 <hr>
