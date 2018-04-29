@@ -49,14 +49,25 @@
                 var oneUrl = list[0].replace("*", j);
                 imgs.src = oneUrl;
                 imgs.alt = oneUrl;
+                // add image url to textarea if loaded
+                imgs.addEventListener("load", function(){
+                    document.getElementById("showURLs").value += this.src + "\n";
+                });
+                // do not display if image load failed
+                imgs.addEventListener("error", function(){
+                    this.style = "display: none;";
+                });
                 imgarea.appendChild(imgs);
-                document.getElementById("showURLs").value += imgs.src + "\n";
             }
         }else{
             for (var i=0; i<=list.length-1; i++){
                 var imgs = document.createElement("img");
                 imgs.src = list[i];
                 imgs.alt = list[i];
+                // do not display if image load failed
+                imgs.addEventListener("error", function(){
+                    this.style = "display: none;";
+                });
                 imgarea.appendChild(imgs);
             }
         }
