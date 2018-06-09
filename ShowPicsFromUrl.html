@@ -53,9 +53,9 @@
                 imgs.addEventListener("load", function(){
                     document.getElementById("showURLs").value += this.src + "\n";
                 });
-                // do not display if image load failed
+                // remove element if image load failed
                 imgs.addEventListener("error", function(){
-                    this.style = "display: none;";
+                    this.remove();
                 });
                 imgarea.appendChild(imgs);
             }
@@ -64,9 +64,10 @@
                 var imgs = document.createElement("img");
                 imgs.src = list[i];
                 imgs.alt = list[i];
-                // do not display if image load failed
+                // remove element if image load failed
                 imgs.addEventListener("error", function(){
-                    this.style = "display: none;";
+                    this.remove();
+                    showErrorMessage("Image failed load.");
                 });
                 imgarea.appendChild(imgs);
             }
@@ -87,6 +88,15 @@
             document.getElementById("AllUrls").style.visibility = "hidden";
             document.getElementById("showURLs").style.visibility = "hidden";
         }
+    }
+    
+    function showErrorMessage(message){
+        var imgarea = document.getElementById("imgarea");
+        var spans = document.createElement("span");
+        var text = document.createTextNode(message);
+        spans.style = "color: red;";
+        spans.appendChild(text);
+        imgarea.appendChild(spans);
     }
 </script>
 </head>
