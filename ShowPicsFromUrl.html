@@ -1,153 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Show Pictures From Urls</title>
-<style type="text/css">
-    textarea {
-        width: 45%;
-        height: 150px;
-    }
-    .areaTitle{
-        width: 45%;
-        display: inline-block;
-    }
-    .AllUrl{
-        visibility: hidden;
-    }
-    #create{
-        width: 150px;
-        height: 40px;
-        font-size: 20px;
-    }
-    #min, #max, #step, #numberWidth{
-        width: 50px;
-    }
-    img{
-        margin: 5px;
-        width: 24%;
-    }
-</style>
-<script>
-    function NewPage(){
-        var list = document.getElementById("textarea").value.split("\n");
-        
-        // remove all images
-        var imgarea = document.getElementById("imgarea");
-        while (imgarea.firstChild) {
-            imgarea.removeChild(imgarea.firstChild);
+    <style type="text/css">
+        textarea {
+            width: 45%;
+            height: 150px;
         }
-        document.getElementById("showURLs").value = "";
-        
-        if (document.getElementById("useRegex").checked){
-            var min = parseInt(document.getElementById("min").value);
-            var maxloop = parseInt(document.getElementById("max").value);
-            var step = parseInt(document.getElementById("step").value);
-            var isAddLeadingZero = document.getElementById("isAddLeadingZero").checked;
-            var numberOfWidth = parseInt(document.getElementById("numberWidth").value);
 
-            for (var j=min; j<=maxloop; j+=step){
-                var replaceNumberString = j + "";
-                if (isAddLeadingZero){
-                    replaceNumberString = addLeadingZeros(replaceNumberString,  numberOfWidth);
+        .areaTitle {
+            width: 45%;
+            display: inline-block;
+        }
+
+        .AllUrl {
+            visibility: hidden;
+        }
+
+        #create {
+            width: 150px;
+            height: 40px;
+            font-size: 20px;
+        }
+
+        #min,
+        #max,
+        #step,
+        #numberWidth {
+            width: 50px;
+        }
+
+        img {
+            margin: 5px;
+            width: 24%;
+        }
+    </style>
+    <script>
+        function NewPage() {
+            var list = document.getElementById("textarea").value.split("\n");
+
+            // remove all images
+            var imgarea = document.getElementById("imgarea");
+            while (imgarea.firstChild) {
+                imgarea.removeChild(imgarea.firstChild);
+            }
+            document.getElementById("showURLs").value = "";
+
+            if (document.getElementById("useRegex").checked) {
+                var min = parseInt(document.getElementById("min").value);
+                var maxloop = parseInt(document.getElementById("max").value);
+                var step = parseInt(document.getElementById("step").value);
+                var isAddLeadingZero = document.getElementById("isAddLeadingZero").checked;
+                var numberOfWidth = parseInt(document.getElementById("numberWidth").value);
+
+                for (var j = min; j <= maxloop; j += step) {
+                    var replaceNumberString = j + "";
+                    if (isAddLeadingZero) {
+                        replaceNumberString = addLeadingZeros(replaceNumberString, numberOfWidth);
+                    }
+
+                    var oneUrl = list[0].replace("*", replaceNumberString);
+                    var imgs = document.createElement("img");
+                    imgs.src = oneUrl;
+                    imgs.alt = oneUrl;
+                    // add image url to textarea if loaded
+                    imgs.addEventListener("load", function () {
+                        document.getElementById("showURLs").value += this.src + "\n";
+                    });
+                    // remove element if image load failed
+                    imgs.addEventListener("error", function () {
+                        this.remove();
+                    });
+                    imgarea.appendChild(imgs);
                 }
-                
-                var oneUrl = list[0].replace("*", replaceNumberString);
-                var imgs = document.createElement("img");
-                imgs.src = oneUrl;
-                imgs.alt = oneUrl;
-                // add image url to textarea if loaded
-                imgs.addEventListener("load", function(){
-                    document.getElementById("showURLs").value += this.src + "\n";
-                });
-                // remove element if image load failed
-                imgs.addEventListener("error", function(){
-                    this.remove();
-                });
-                imgarea.appendChild(imgs);
-            }
-        }else{
-            for (var i=0; i<=list.length-1; i++){
-                var imgs = document.createElement("img");
-                imgs.src = list[i];
-                imgs.alt = list[i];
-                // remove element if image load failed
-                imgs.addEventListener("error", function(){
-                    this.remove();
-                    showErrorMessage("Image failed load.");
-                });
-                imgarea.appendChild(imgs);
+            } else {
+                for (var i = 0; i <= list.length - 1; i++) {
+                    var imgs = document.createElement("img");
+                    imgs.src = list[i];
+                    imgs.alt = list[i];
+                    // remove element if image load failed
+                    imgs.addEventListener("error", function () {
+                        this.remove();
+                        showErrorMessage("Image failed load.");
+                    });
+                    imgarea.appendChild(imgs);
+                }
             }
         }
-    }
-    
-    function check(){
-        if (document.getElementById("useRegex").checked){
-            document.getElementById("min").disabled = false;
-            document.getElementById("max").disabled = false;
-            document.getElementById("step").disabled = false;
-            document.getElementById("isAddLeadingZero").disabled = false;
-            document.getElementById("AllUrls").style.visibility = "visible";
-            document.getElementById("showURLs").style.visibility = "visible";
-        }else{
-            document.getElementById("min").disabled = true;
-            document.getElementById("max").disabled = true;
-            document.getElementById("step").disabled = true;
-            document.getElementById("isAddLeadingZero").disabled = true;
-            document.getElementById("AllUrls").style.visibility = "hidden";
-            document.getElementById("showURLs").style.visibility = "hidden";
+
+        function check() {
+            if (document.getElementById("useRegex").checked) {
+                document.getElementById("min").disabled = false;
+                document.getElementById("max").disabled = false;
+                document.getElementById("step").disabled = false;
+                document.getElementById("isAddLeadingZero").disabled = false;
+                document.getElementById("AllUrls").style.visibility = "visible";
+                document.getElementById("showURLs").style.visibility = "visible";
+            } else {
+                document.getElementById("min").disabled = true;
+                document.getElementById("max").disabled = true;
+                document.getElementById("step").disabled = true;
+                document.getElementById("isAddLeadingZero").disabled = true;
+                document.getElementById("AllUrls").style.visibility = "hidden";
+                document.getElementById("showURLs").style.visibility = "hidden";
+            }
         }
-    }
-    
-    function checkAddLeadingZero(){
-        if (document.getElementById("isAddLeadingZero").checked){
-            document.getElementById("numberWidth").disabled = false;
-        }else{
-            document.getElementById("numberWidth").disabled = true;
+
+        function checkAddLeadingZero() {
+            if (document.getElementById("isAddLeadingZero").checked) {
+                document.getElementById("numberWidth").disabled = false;
+            } else {
+                document.getElementById("numberWidth").disabled = true;
+            }
         }
-    }
-    
-    function showErrorMessage(message){
-        var imgarea = document.getElementById("imgarea");
-        var spans = document.createElement("span");
-        var text = document.createTextNode(message);
-        spans.style = "color: red;";
-        spans.appendChild(text);
-        imgarea.appendChild(spans);
-    }
-    
-    function addLeadingZeros(str, width){
-        if (str.length < width){
-            str = "0".repeat(width - str.length) + str;
+
+        function showErrorMessage(message) {
+            var imgarea = document.getElementById("imgarea");
+            var spans = document.createElement("span");
+            var text = document.createTextNode(message);
+            spans.style = "color: red;";
+            spans.appendChild(text);
+            imgarea.appendChild(spans);
         }
-        return str;
-    }
-</script>
+
+        function addLeadingZeros(str, width) {
+            if (str.length < width) {
+                str = "0".repeat(width - str.length) + str;
+            }
+            return str;
+        }
+    </script>
 </head>
+
 <body>
     <span class="areaTitle">Put your images url in here:</span>
     <span class="areaTitle AllUrl" id="AllUrls">All image urls:</span><br>
-<div>
-    <TEXTAREA id="textarea"></TEXTAREA>
-    <TEXTAREA id="showURLs" class="AllUrl" readonly ></TEXTAREA>
-</div>
-<div>
-    <input type="checkbox" name="useRegex" id="useRegex" onclick="check();">
-    <label for="useRegex">use wildcard(*) replace numbers-</label>
-    <label>range:</label>
+    <div>
+        <TEXTAREA id="textarea"></TEXTAREA>
+        <TEXTAREA id="showURLs" class="AllUrl" readonly></TEXTAREA>
+    </div>
+    <div>
+        <input type="checkbox" name="useRegex" id="useRegex" onclick="check();">
+        <label for="useRegex">use wildcard(*) replace numbers-</label>
+        <label>range:</label>
         <input type="number" name="min" id="min" disabled placeholder="min" min="0">~
         <input type="number" name="max" id="max" disabled placeholder="max" min="1">
-    <label for="step">step:</label>
+        <label for="step">step:</label>
         <input type="number" name="step" id="step" disabled placeholder="step" min="1">
-    <br>
-    &nbsp;&nbsp;
-    <input type="checkbox" name="isAddLeadingZero" id="isAddLeadingZero" onclick="checkAddLeadingZero();" disabled>
-    <label for="isAddLeadingZero">Add leading zeros,</label>
-    <label for="numberWidth">width:</label>
+        <br>
+        &nbsp;&nbsp;
+        <input type="checkbox" name="isAddLeadingZero" id="isAddLeadingZero" onclick="checkAddLeadingZero();" disabled>
+        <label for="isAddLeadingZero">Add leading zeros,</label>
+        <label for="numberWidth">width:</label>
         <input type="number" name="numberWidth" id="numberWidth" min="2" value="2" disabled>
-</div>
-<input type="button" id="create" value="Show!" onclick="NewPage();"><br>
-<hr>
-<div id="imgarea"></div>
+    </div>
+    <input type="button" id="create" value="Show!" onclick="NewPage();"><br>
+    <hr>
+    <div id="imgarea"></div>
 </body>
+
 </html>
