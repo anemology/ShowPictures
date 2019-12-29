@@ -65,9 +65,12 @@
                     var imgs = document.createElement("img");
                     imgs.src = oneUrl;
                     imgs.alt = oneUrl;
-                    // add image url to textarea if loaded
+                    // add image url to textarea if loaded, then sort
                     imgs.addEventListener("load", function () {
-                        document.getElementById("showURLs").value += this.src + "\n";
+                        var text = document.getElementById("showURLs").value;
+                        if (text) text += "\n";
+                        text += this.src;
+                        document.getElementById("showURLs").value = text.split("\n").sort().join("\n");
                     });
                     // remove element if image load failed
                     imgs.addEventListener("error", function () {
