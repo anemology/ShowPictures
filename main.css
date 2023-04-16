@@ -1,0 +1,31 @@
+textarea {
+    width: 45%;
+    height: 150px;
+}
+
+.areaTitle {
+    width: 45%;
+    display: inline-block;
+}
+
+.AllUrl {
+    visibility: hidden;
+}
+
+#create {
+    width: 150px;
+    height: 40px;
+    font-size: 20px;
+}
+
+#min,
+#max,
+#step,
+#numberWidth {
+    width: 50px;
+}
+
+img {
+    margin: 5px;
+    width: 24%;
+}
