@@ -53,44 +53,39 @@ function NewPage() {
     }
 }
 
+function enableElement(elementId, isEnabled) {
+    document.getElementById(elementId).disabled = !isEnabled;
+}
+
+function showElement(elementId, isVisible) {
+    document.getElementById(elementId).style.visibility = isVisible ? "visible" : "hidden";
+}
+
 function check() {
-    if (document.getElementById("useRegex").checked) {
-        document.getElementById("min").disabled = false;
-        document.getElementById("max").disabled = false;
-        document.getElementById("step").disabled = false;
-        document.getElementById("isAddLeadingZero").disabled = false;
-        document.getElementById("AllUrls").style.visibility = "visible";
-        document.getElementById("showURLs").style.visibility = "visible";
-    } else {
-        document.getElementById("min").disabled = true;
-        document.getElementById("max").disabled = true;
-        document.getElementById("step").disabled = true;
-        document.getElementById("isAddLeadingZero").disabled = true;
-        document.getElementById("AllUrls").style.visibility = "hidden";
-        document.getElementById("showURLs").style.visibility = "hidden";
-    }
+    const useRegex = document.getElementById("useRegex").checked;
+    enableElement("min", useRegex);
+    enableElement("max", useRegex);
+    enableElement("step", useRegex);
+    enableElement("isAddLeadingZero", useRegex);
+    showElement("AllUrls", useRegex);
+    showElement("showURLs", useRegex);
 }
 
 function checkAddLeadingZero() {
-    if (document.getElementById("isAddLeadingZero").checked) {
-        document.getElementById("numberWidth").disabled = false;
-    } else {
-        document.getElementById("numberWidth").disabled = true;
-    }
+    const isAddLeadingZero = document.getElementById("isAddLeadingZero");
+    const numberWidth = document.getElementById("numberWidth");
+    numberWidth.disabled = !isAddLeadingZero.checked;
 }
 
 function showErrorMessage(message) {
-    var imgarea = document.getElementById("imgarea");
-    var spans = document.createElement("span");
-    var text = document.createTextNode(message);
-    spans.style = "color: red;";
-    spans.appendChild(text);
-    imgarea.appendChild(spans);
+    const imgarea = document.getElementById("imgarea");
+    const errorText = document.createElement("span");
+    errorText.style.color = "red";
+    errorText.textContent = message;
+    imgarea.appendChild(errorText);
 }
 
 function addLeadingZeros(str, width) {
-    if (str.length < width) {
-        str = "0".repeat(width - str.length) + str;
-    }
-    return str;
+    const zerosToAdd = width - str.length;
+    return zerosToAdd > 0 ? "0".repeat(zerosToAdd) + str : str;
 }
